@@ -1,1 +1,1 @@
-# Labyrinth
+# Labyrinth - test project on Unity
