@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Ball : MonoBehaviour
@@ -13,8 +14,14 @@ public class Ball : MonoBehaviour
     private void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        // Set the maximum angular velocity.
-        GetComponent<Rigidbody>().maxAngularVelocity = m_MaxAngularVelocity;
+        if (m_MaxAngularVelocity == 0)
+        {
+            throw new Exception("Ускорение не может быть нулевым!");
+        } else
+        {
+            // Set the maximum angular velocity.
+            GetComponent<Rigidbody>().maxAngularVelocity = m_MaxAngularVelocity;
+        }
     }
 
     public void Move(Vector3 moveDirection, bool jump)

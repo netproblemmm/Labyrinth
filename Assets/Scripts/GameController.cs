@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public sealed class GameController: MonoBehaviour
 {
@@ -8,6 +9,22 @@ public sealed class GameController: MonoBehaviour
     private void Awake()
     {
         _interactiveObjects = FindObjectsOfType<InteractiveObject>();
+        foreach (var o in _interactiveObjects)
+        {
+            if (o is GoodBonus goodBonus)
+            {
+                goodBonus.CaughtInteraction += CameraShake;
+            }
+            if (o is BadBonus badBonus)
+            {
+                badBonus.CaughtInteraction += CameraShake;
+            }
+        }
+    }
+
+    private void CameraShake(object value)
+    {
+        Debug.Log("CameraShake");
     }
 
     private void Update()

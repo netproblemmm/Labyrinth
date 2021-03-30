@@ -4,24 +4,26 @@ public sealed class BadBonus : InteractiveObject, IFly, IRotation
 {
     private float _speedRotation;
     private float _flyHeight;
-    public GameObject ball;
+
+    public delegate void CaughtInteractionDelegate(object value);
+    public event CaughtInteractionDelegate CaughtInteraction;
 
     private void Awake()
     {
         _speedRotation = Random.Range(10.0f, 50.0f);
-        _flyHeight = Random.Range(1.0f, 5.0f);
+        _flyHeight = Random.Range(0.2f, 0.5f);
     }
 
     protected override void Interaction()
     {
         //base.Interaction();
-        if (gameObject.tag == "Skull")
+        if (gameObject.CompareTag("Skull"))
         {
             Debug.Log("Dead!");
-            //Destroy(ball);
         }
-        if (gameObject.tag == "SpeedDown")
+        if (gameObject.CompareTag("SpeedDown"))
             Ball.m_MovePower = 0.3f;
+        CaughtInteraction?.Invoke(this);
     }
 
     public void Fly()
