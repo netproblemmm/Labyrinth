@@ -4,29 +4,31 @@ public sealed class GoodBonus: InteractiveObject, IFly, IFlicker
 {
     private Material _material;
     private float _flyHeight;
-    private int _levelTargets;
     private DisplayBonuses _displayBonuses;
-    //private float _m_MovePower = Ball.m_MovePower;
     public GameObject exitWall;
+    
+    public delegate void CaughtInteractionDelegate(object value);
+    public event CaughtInteractionDelegate CaughtInteraction;
 
     private void Awake()
     {
         _material = GetComponent<Renderer>().material;
-        _flyHeight = Random.Range(1.0f, 5.0f);
+        _flyHeight = Random.Range(0.2f, 0.5f);
         _displayBonuses = new DisplayBonuses();
     }
 
     protected override void Interaction()
     {
         //base.Interaction();
-        if (gameObject.tag == "Ring")
+        if (gameObject.CompareTag("Ring"))
             GameController.levelTargets -= 1;
-        if (gameObject.tag == "SpeedUp")
+        if (gameObject.CompareTag("SpeedUp"))
             Ball.m_MovePower = 550.0f;
         //_displayBonuses.Display(5);
         if (GameController.levelTargets == 0)
             //exitWall.transform.position = new Vector3(transform.position.x+50.0f, transform.position.y + 50.0f, transform.position.z+50.0f);
             Destroy(exitWall);
+        CaughtInteraction?.Invoke(this);
     }
 
     public void Fly()
