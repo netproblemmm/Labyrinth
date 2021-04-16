@@ -1,10 +1,12 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public sealed class GameController: MonoBehaviour
 {
     private InteractiveObject[] _interactiveObjects;
     public static int levelTargets = 6;
+    public Button _restartButton;
 
     private void Awake()
     {
@@ -20,12 +22,23 @@ public sealed class GameController: MonoBehaviour
                 badBonus.CaughtInteraction += CameraShake;
             }
         }
+
+        _restartButton.onClick.AddListener(RestartGame);
+        _restartButton.gameObject.SetActive(true);
+
     }
 
     private void CameraShake(object value)
     {
         Debug.Log("CameraShake");
     }
+
+    private void RestartGame()
+    {
+        SceneManager.LoadScene(sceneBuildIndex: 0);
+        Time.timeScale = 1.0f;
+    }
+
 
     private void Update()
     {

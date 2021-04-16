@@ -6,7 +6,8 @@ public sealed class GoodBonus: InteractiveObject, IFly, IFlicker
     private float _flyHeight;
     private DisplayBonuses _displayBonuses;
     public GameObject exitWall;
-    
+    public GameObject wonImage;
+
     public delegate void CaughtInteractionDelegate(object value);
     public event CaughtInteractionDelegate CaughtInteraction;
 
@@ -26,8 +27,11 @@ public sealed class GoodBonus: InteractiveObject, IFly, IFlicker
             Ball.m_MovePower = 550.0f;
         //_displayBonuses.Display(5);
         if (GameController.levelTargets == 0)
+        {
             //exitWall.transform.position = new Vector3(transform.position.x+50.0f, transform.position.y + 50.0f, transform.position.z+50.0f);
             Destroy(exitWall);
+            wonImage.SetActive(true);
+        }
         CaughtInteraction?.Invoke(this);
     }
 
