@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class BallUserControl : MonoBehaviour
@@ -10,6 +11,9 @@ public class BallUserControl : MonoBehaviour
     private Transform cam; // A reference to the main camera in the scenes transform
     private Vector3 camForward; // The current forward direction of the camera
     private bool jump; // whether the jump button is currently pressed
+    private bool save; // whether the save button is currently pressed
+    private bool load; // whether the load button is currently pressed
+    private readonly ISaveDataRepository _saveDataRepository;
 
     private void Awake()
     {
@@ -36,6 +40,8 @@ public class BallUserControl : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         jump = Input.GetButton("Jump");
+        save = Input.GetButton("Save");
+        load = Input.GetButton("Load");
 
         // calculate move direction
         if (cam != null)
@@ -56,5 +62,15 @@ public class BallUserControl : MonoBehaviour
         // Call the Move function of the ball controller
         ball.Move(move, jump);
         jump = false;
+        // Call the save / load functions
+        if (save){
+            _saveDataRepository.Save(ball);
+            save = false;
+        }
+        if (load)
+        {
+            _saveDataRepository.Load(ball);
+            load = false;
+        }
     }
 }
